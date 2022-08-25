@@ -20,6 +20,8 @@ RUN apt-get update && \
         sqlite3 \
         vim \
         snmp \
+        rust-all \
+        cargo \
         && \
     apt-get clean && \
     rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
@@ -28,8 +30,12 @@ RUN mkdir -p /yangsuite/uwsgi
 COPY uwsgi.ini /yangsuite/
 COPY migrate_and_start.sh /yangsuite/
 RUN chmod +x /yangsuite/migrate_and_start.sh
-RUN pip3 install --upgrade pip
-RUN pip3 install --upgrade setuptools wheel uwsgi
+
+RUN pip3 install --upgrade pip && \
+    pip3 --version
+
+RUN pip3 --version && \
+    pip3 install --upgrade setuptools setuptools-rust wheel uwsgi
 
 # Installing YANG Suite
 RUN pip3 install --upgrade --no-cache yangsuite[core]
